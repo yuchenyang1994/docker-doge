@@ -1,0 +1,11 @@
+package: docker_doge
+import:
+- package: github.com/gin-gonic/gin
+  version: v1.2
+- package: github.com/appleboy/gin-jwt
+  version: v2.3.1
+- package: github.com/jinzhu/gorm
+  version: v1.0
+- package: github.com/fsouza/go-dockerclient
+- package: github.com/gorilla/websocket
+  version: v1.2.0
