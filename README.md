@@ -1,3 +1,2 @@
-# Docker-Doge
-![Markdown](http://i1.bvimg.com/607077/3d7d1b2e08da92bb.jpg)
-
+# Docker-Doge
+![doge](http://ww3.sinaimg.cn/large/0060lm7Tgy1fiu34how88j30pn0q5h5n.jpg)
