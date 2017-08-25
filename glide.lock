@@ -1,14 +1,49 @@
-hash: f01a1f46335fcdf82f4ddcfc3de242943bf1b7bcd8078203b5a90eea3524af95
-updated: 2017-08-23T22:09:50.261512111+08:00
+hash: f6e13493afabbe071f7ec238d1c8d091a809062f96d26bd188cc3fbedbd9c688
+updated: 2017-08-25T16:21:19.49830782+08:00
 imports:
 - name: github.com/appleboy/gin-jwt
   version: f7347d7c16fc8297bf5b7215b9e4847a5ca05d90
 - name: github.com/fsouza/go-dockerclient
   version: 75772940379e725b5aae213e570f9dcd751951cb
+- name: github.com/gin-contrib/sse
+  version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/gin
   version: d459835d2b077e44f7c9b453505ee29881d5d12d
+  subpackages:
+  - binding
+  - render
+- name: github.com/golang/protobuf
+  version: ab9f9a6dab164b7d1246e0e688b0ab7b94d8553e
+  subpackages:
+  - proto
 - name: github.com/gorilla/websocket
   version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
 - name: github.com/jinzhu/gorm
   version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
+  subpackages:
+  - dialects/sqlite
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/mattn/go-isatty
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+- name: github.com/mattn/go-sqlite3
+  version: 47fc4e5e9153645da45af6a86a5bce95e63a0f9e
+- name: github.com/mikespook/gorbac
+  version: 9acee989bfc3a4028255316b1010f124750310c6
+- name: github.com/ugorji/go
+  version: 5efa3251c7f7d05e5d9704a69a984ec9f1386a40
+  subpackages:
+  - codec
+- name: golang.org/x/net
+  version: f01ecb60fe3835d80d9a0b7b2bf24b228c89260e
+  subpackages:
+  - context
+- name: golang.org/x/sys
+  version: 07c182904dbd53199946ba614a412c61d3c548f5
+  subpackages:
+  - unix
+- name: gopkg.in/go-playground/validator.v8
+  version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
+- name: gopkg.in/yaml.v2
+  version: 1be3d31502d6eabc0dd7ce5b0daab022e14a5538
 testImports: []

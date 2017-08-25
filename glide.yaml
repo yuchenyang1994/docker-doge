@@ -9,3 +9,7 @@ import:
 - package: github.com/fsouza/go-dockerclient
 - package: github.com/gorilla/websocket
   version: v1.2.0
+- package: github.com/mikespook/gorbac
+  version: v2.0.0
+- package: github.com/gin-contrib/sse
+- package: github.com/jinzhu/inflection
