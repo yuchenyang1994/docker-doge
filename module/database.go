@@ -14,7 +14,7 @@ var (
 
 func GetDbInstance() *gorm.DB {
 	once.Do(func() {
-		db, _ = gorm.Open("sqlite3", "/tmp/gorm.db")
+		db, _ = gorm.Open("sqlite3", "./data.db")
 	})
 	return db
 }

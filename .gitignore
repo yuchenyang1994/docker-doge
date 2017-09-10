@@ -2,3 +2,5 @@ vendor/
 *.db
 *.pyc
 *.log
+*.vscode/
+.#*

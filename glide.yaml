@@ -1,4 +1,4 @@
-package: docker_doge
+package: docker-doge
 import:
 - package: github.com/gin-gonic/gin
   version: v1.2
@@ -6,10 +6,24 @@ import:
   version: v2.3.1
 - package: github.com/jinzhu/gorm
   version: v1.0
+  subpackages:
+  - dialects/sqlite
 - package: github.com/fsouza/go-dockerclient
 - package: github.com/gorilla/websocket
   version: v1.2.0
-- package: github.com/mikespook/gorbac
-  version: v2.0.0
 - package: github.com/gin-contrib/sse
 - package: github.com/jinzhu/inflection
+- package: github.com/gin-contrib/authz
+- package: github.com/casbin/casbin
+  version: v1.0.0
+- package: github.com/casbin/gorm-adapter
+- package: gopkg.in/dgrijalva/jwt-go.v3
+  version: v3.0.0
+- package: github.com/docker/docker
+  version: v17.05.0-ce-rc3
+  subpackages:
+  - api/types/swarm
+- package: github.com/Knetic/govaluate
+  version: v3.0.0
+- package: github.com/docker/go-units
+  version: v0.3.2
