@@ -1,13 +1,18 @@
 package main
 
 import (
+	"docker-doge/db"
 	"docker-doge/middleware"
 
 	"github.com/gin-contrib/authz"
 	"github.com/gin-gonic/gin"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func main() {
+	d := db.GetDbInstance()
+	db.MigrationDB(d)
+	db.CreateRole(d)
 	e := middleware.GetAuthzInstance()
 	r := gin.New()
 	r.Use(gin.Logger())   // 日志处理

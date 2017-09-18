@@ -17,7 +17,7 @@ var (
 func GetAuthzInstance() *casbin.Enforcer {
 	once.Do(
 		func() {
-			adpter := gormadapter.NewAdapter("sqlite3", "../data.db", true)
+			adpter := gormadapter.NewAdapter("sqlite3", "data.db", true)
 			enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
 		})
 	return enforcer
