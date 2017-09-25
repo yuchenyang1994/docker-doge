@@ -12,7 +12,6 @@ import (
 func main() {
 	d := db.GetDbInstance()
 	db.MigrationDB(d)
-	db.CreateRole(d)
 	e := middleware.GetAuthzInstance()
 	r := gin.New()
 	r.Use(gin.Logger())   // 日志处理

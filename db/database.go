@@ -1,10 +1,9 @@
 package db
 
 import (
-	"sync"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"sync"
 )
 
 var (
