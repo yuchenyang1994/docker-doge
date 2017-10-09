@@ -1,20 +1,25 @@
 package db
 
 import (
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"sync"
-)
-
-var (
-	db   *gorm.DB
-	once sync.Once
 )
 
 func GetDbInstance() *gorm.DB {
-	once.Do(func() {
-		db, _ = gorm.Open("sqlite3", "data.db")
-	})
+	db, err := gorm.Open("sqlite3", "data.db")
+	if err != nil {
+		log.Fatal("db error")
+	}
+	return db
+}
+
+func GetTestDB() *gorm.DB {
+	db, err := gorm.Open("sqlite3", "test.db")
+	if err != nil {
+		log.Fatal("db error")
+	}
 	return db
 }
 
@@ -22,19 +27,10 @@ func GetDbInstance() *gorm.DB {
 func MigrationDB(db *gorm.DB) {
 	db.AutoMigrate(
 		&User{},
-		&UserGroup{},
-		&Role{})
+		&UserGroup{})
 }
 
-// 创建基本的角色数据
-// CreateRole ...
-func CreateRole(db *gorm.DB) {
-	role := Role{}
-	roleList := []string{"super", "admin", "leader", "user"}
-	for _, value := range roleList {
-		db.Where("name = ?", value).Find(&role)
-		if role.Name == "" {
-			db.NewRecord(Role{Name: value})
-		}
-	}
+func CreateUserGroup(db *gorm.DB) {
+	u := &UserGroup{GroupName: "test"}
+	db.NewRecord(u)
 }

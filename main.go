@@ -5,10 +5,11 @@ import (
 	"docker-doge/middleware"
 
 	"fmt"
+	"os"
+
 	"github.com/gin-contrib/authz"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"os"
 )
 
 // run ...
@@ -33,9 +34,9 @@ func migrate() {
 }
 
 // createRole ...
-func createRole() {
+func createUserGroup() {
 	d := db.GetDbInstance()
-	db.CreateRole(d)
+	db.CreateUserGroup(d)
 }
 
 func main() {
@@ -48,13 +49,13 @@ func main() {
 		case "migrate":
 			migrate()
 		case "createrole":
-			createRole()
+			createUserGroup()
 		}
 	} else {
 		fmt.Println("USAGE:",
 			"runserver: 启动服务器",
 			"migrate: 同步表结构",
-			"createrole: 插入初始用户角色")
+			"createrole: 插入用户组角色")
 	}
 
 }
