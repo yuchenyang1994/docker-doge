@@ -10,7 +10,7 @@ import (
 
 type User struct {
 	gorm.Model
-	UserGroupID int
+	UserGroupID uint
 	Email       string `gorm:"size:50"`
 	Password    string `gorm:"size:255"`
 	Intro       string `gorm:"default:' '"`
