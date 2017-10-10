@@ -24,6 +24,8 @@ func runServer() {
 			"message": "Hello Golang",
 		})
 	})
+	jwtMiddleWare := middleware.NewJwtMiddleWare()
+	r.POST("/login", jwtMiddleWare.LoginHandler)
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
 
