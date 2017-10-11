@@ -6,22 +6,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JwtAuthenticatorHandler(email string, password string, c *gin.Context) (string, bool) {
+func JwtAuthenticatorHandler(username string, password string, c *gin.Context) (uint, bool) {
 	d := db.GetDbInstance()
-	user := &db.User{Email: email, Password: password}
+	user := &db.User{Email: username, Password: password}
 	user, has := user.GetUserByPassword(d)
-	if has == true {
-		return email, true
+	if has {
+		return user.ID, true
 	}
-	return email, false
+	return user.ID, false
 }
 
-func JwtAuthorizatorHandler(email string, c *gin.Context) bool {
+func JwtAuthorizatorHandler(userId uint, c *gin.Context) bool {
 	d := db.GetDbInstance()
 	defer d.Close()
 	user := &db.User{}
-	d.Where("email=?", email).First(user)
-	if user.Email == email {
+	if notFound := d.First(user, userId).RecordNotFound(); notFound != true {
 		return true
 	}
 	return false

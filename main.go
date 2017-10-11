@@ -10,7 +10,6 @@ import (
 
 	"docker-doge/handler"
 
-	"github.com/gin-contrib/authz"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -19,15 +18,10 @@ import (
 func runServer() {
 	e := middleware.GetAuthzInstance()
 	r := gin.New()
-	r.Use(gin.Logger())   // 日志处理
-	r.Use(gin.Recovery()) // 500不处理
-	r.Use(authz.NewAuthorizer(e))
-	jwtMiddleWare := configs.NewJwtMiddleWare()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello Golang",
-		})
-	})
+	r.Use(gin.Logger())                            // 日志处理
+	r.Use(gin.Recovery())                          // 500不处理
+	jwtMiddleWare := configs.NewJwtMiddleWare()    // jwt中间件
+	jwtAuthorizer := middleware.NewJwtAuthorizer() // jwt权限校验器
 	r.POST("/login", jwtMiddleWare.LoginHandler)
 	r.POST("/register", handler.RegisterHandler)
 	r.Run() // listen and serve on 0.0.0.0:8080
