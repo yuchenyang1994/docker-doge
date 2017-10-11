@@ -1,0 +1,164 @@
+{
+	"variables": [],
+	"info": {
+		"name": "docker_doge",
+		"_postman_id": "b74d8268-7328-cfe1-594b-fc2dfe638339",
+		"description": "# 介绍\ndocker doge 是一个docker的控制面板，包含了常用的开发功能\n\n# 须知\napi采用jwt的验证方式，登陆后获取token再进行其他API的访问",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"description": "",
+			"item": [
+				{
+					"name": "{{dogehost}}auth/hello",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{dogehost}}auth/hello",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "认证token"
+							}
+						],
+						"body": {},
+						"description": "测试受保护的API"
+					},
+					"response": []
+				},
+				{
+					"name": "{{dogehost}}auth/refresh_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+									"",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"",
+									"if (data.token) {",
+									"  tests[\"Body has token\"] = true",
+									"  postman.setEnvironmentVariable(\"token\", data.token);",
+									"}",
+									"else {",
+									"  tests[\"Body has token\"] = false;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{dogehost}}auth/refresh_token",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "刷新token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "{{dogehost}}register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{dogehost}}register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"test.zhang@hypers.com\",  \n\t\"password\":\"ycy940304\",\n\t\"userGroupId\":1\n}"
+				},
+				"description": "注册用户\n```json\n{\n\t\"email\":\"you email\",  \n\t\"password\":\"you password\",\n\t\"userGroupId\":\"join group id\"\n}\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "{{dogehost}}login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"",
+							"if (data.token) {",
+							"  tests[\"Body has token\"] = true;",
+							"  postman.setEnvironmentVariable(\"token\", data.token);",
+							"}",
+							"else {",
+							"  tests[\"Body has token\"] = false;",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{dogehost}}login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"test.zhang@hypers.com\",\n\t\"password\":\"ycy940304\"\n}"
+				},
+				"description": "# 登录获取token\n## EXAMPLE\n```json\n{\n\t\n\t\"username\":\"you username\",\n\t\"password\":\"you password\"\n}\n\n```\n## RESPONSE\n```json\n{\n    \"expire\": \"2017-10-12T00:38:04+08:00\", // 登录时间\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDc3Mzk4ODQsImlkIjoidGVzdC56aGFuZ0BoeXBlcnMuY29tIiwib3JpZ19pYXQiOjE1MDc3MzYyODR9.XXvzZm4Z6OVyxN3XSLPVl_gl5-0YDg55mDDOqfsfIrk\" // 登录token\n}\n```"
+			},
+			"response": []
+		}
+	]
+}
