@@ -1,15 +1,18 @@
 package validators
 
 import (
-	validator "gopkg.in/go-playground/validator.v8"
 	"reflect"
 	"regexp"
+
+	"docker-doge/db"
+
+	validator "gopkg.in/go-playground/validator.v8"
 )
 
 type SingupVlidator struct {
 	Email       string `json:"email" binding:"required, reEmail"`
 	Password    string `json:"password" binding:"required, rePassword"`
-	UserGroupID string `json:"userGroupId" binding:"required, checkUserGroupId"`
+	UserGroupID uint   `json:"userGroupId" binding:"required, checkUserGroupId"`
 }
 
 // reEmail ...
@@ -43,5 +46,15 @@ func rePassword(v *validator.Validate, topStruct reflect.Value, currentStructOrF
 
 func checkUserGroupId(v *validator.Validate, topStruct reflect.Value, currentStructOrField reflect.Value,
 	field reflect.Value, fieldType reflect.Type, fieldKind reflect.Kind, param string) bool {
+	d := db.GetDbInstance()
+	defer d.Close()
+	if userGroupId, ok := field.Interface().(uint); ok {
+		user := &db.User{}
+		if ok := d.First(user, userGroupId).RecordNotFound(); ok {
+			return false
+		}
+		return true
+	}
 	return false
+
 }
