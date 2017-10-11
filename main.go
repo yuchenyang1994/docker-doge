@@ -1,11 +1,14 @@
 package main
 
 import (
+	"docker-doge/configs"
 	"docker-doge/db"
 	"docker-doge/middleware"
 
 	"fmt"
 	"os"
+
+	"docker-doge/handler"
 
 	"github.com/gin-contrib/authz"
 	"github.com/gin-gonic/gin"
@@ -19,13 +22,14 @@ func runServer() {
 	r.Use(gin.Logger())   // 日志处理
 	r.Use(gin.Recovery()) // 500不处理
 	r.Use(authz.NewAuthorizer(e))
+	jwtMiddleWare := configs.NewJwtMiddleWare()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Hello Golang",
 		})
 	})
-	jwtMiddleWare := middleware.NewJwtMiddleWare()
 	r.POST("/login", jwtMiddleWare.LoginHandler)
+	r.POST("/register", handler.RegisterHandler)
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
 

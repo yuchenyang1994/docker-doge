@@ -28,7 +28,10 @@ func Test_UserInsert(t *testing.T) {
 	tx.NewRecord(ug)
 	user := &User{Email: "xxx@gmail.com", Password: "123456",
 		UserGroupID: ug.ID}
-	user.Insert(d)
+	error := user.Insert(d)
+	if error != nil {
+		t.Error("bad insert")
+	}
 	if user.UserGroupID != ug.ID {
 		t.Error("user group error")
 	}

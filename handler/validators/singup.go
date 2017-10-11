@@ -21,7 +21,9 @@ func reEmail(v *validator.Validate, topStruct reflect.Value, currentStructOrFiel
 	if email, ok := field.Interface().(string); ok {
 		if reg, err := regexp.Compile(`\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`); err == nil {
 			ok := reg.MatchString(email)
-			if ok == true {
+			d := db.GetDbInstance()
+			notFound := d.First(&db.User{}, "email = ?", email).RecordNotFound()
+			if ok == true && notFound == false {
 				return true
 			}
 			return false

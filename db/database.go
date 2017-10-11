@@ -16,7 +16,7 @@ func GetDbInstance() *gorm.DB {
 }
 
 func GetTestDB() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("sqlite3", "/tmp/test.db")
 	if err != nil {
 		log.Fatal("db error")
 	}

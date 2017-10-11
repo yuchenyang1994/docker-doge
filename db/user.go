@@ -23,10 +23,11 @@ func (user *User) HashPassword() {
 	user.Password = hashPassword
 }
 
-func (user *User) Insert(db *gorm.DB) {
+func (user *User) Insert(db *gorm.DB) error {
 	defer db.Close()
 	user.HashPassword()
 	db.NewRecord(user)
+	return db.Error
 }
 
 func (user *User) GetUserByPassword(db *gorm.DB) (*User, bool) {
