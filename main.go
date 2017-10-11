@@ -10,6 +10,7 @@ import (
 
 	"docker-doge/handler"
 
+	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -18,10 +19,22 @@ import (
 func runServer() {
 	e := middleware.GetAuthzInstance()
 	r := gin.New()
-	r.Use(gin.Logger())                            // 日志处理
-	r.Use(gin.Recovery())                          // 500不处理
-	jwtMiddleWare := configs.NewJwtMiddleWare()    // jwt中间件
-	jwtAuthorizer := middleware.NewJwtAuthorizer() // jwt权限校验器
+	r.Use(gin.Logger())                         // 日志处理
+	r.Use(gin.Recovery())                       // 500不处理
+	jwtMiddleWare := configs.NewJwtMiddleWare() // jwt中间件
+	middleware.NewJwtAuthorizer(e)              // jwt权限校验器
+	auth := r.Group("/auth")
+	auth.Use(jwtMiddleWare.MiddlewareFunc())
+	{
+		auth.GET("/hello", func(c *gin.Context) {
+			claims := jwt.ExtractClaims(c)
+			c.JSON(200, gin.H{
+				"username": claims["id"],
+				"text":     "Hello World.",
+			})
+		})
+		auth.GET("/refresh_token", jwtMiddleWare.RefreshHandler)
+	}
 	r.POST("/login", jwtMiddleWare.LoginHandler)
 	r.POST("/register", handler.RegisterHandler)
 	r.Run() // listen and serve on 0.0.0.0:8080
