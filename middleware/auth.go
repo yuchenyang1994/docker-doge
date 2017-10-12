@@ -4,6 +4,10 @@ import (
 	"net/http"
 	"sync"
 
+	"strconv"
+
+	"docker-doge/db"
+
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/casbin/casbin"
 	"github.com/casbin/gorm-adapter"
@@ -25,11 +29,8 @@ const (
 
 // get Auth 单例模式返回权限校验器
 func GetAuthzInstance() *casbin.Enforcer {
-	once.Do(
-		func() {
-			adpter := gormadapter.NewAdapter("sqlite3", "data.db", true)
-			enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
-		})
+	adpter := gormadapter.NewAdapter("sqlite3", "data.db", true)
+	enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
 	return enforcer
 }
 
@@ -44,17 +45,21 @@ func NewJwtAuthorizer(e *casbin.Enforcer) gin.HandlerFunc {
 	}
 }
 
-// BasicAuthorizer stores the casbin handler
+// JwtAuthorizer stores the casbin handler
 type BasicAuthorizer struct {
 	enforcer *casbin.Enforcer
 }
 
-// GetUserName gets the user name from the request.
+// GetUserName gets the username from the request.
 // Currently, only HTTP basic authentication is supported
 func (a *BasicAuthorizer) GetUserRole(c *gin.Context) []string {
+	d := db.GetDbInstance()
 	claims := jwt.ExtractClaims(c)
-	username := claims["id"].(string)
-	roles := a.enforcer.GetRolesForUser(username)
+	strUserId := claims["id"].(string)
+	user := &db.User{}
+	userid, _ := strconv.ParseUint(strUserId, 0, 64)
+	d.First(user, userid)
+	roles := a.enforcer.GetRolesForUser(user.Email)
 	return roles
 }
 
