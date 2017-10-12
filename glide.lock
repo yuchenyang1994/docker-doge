@@ -1,5 +1,5 @@
-hash: 14f5ff5481f97b6e7d8ae4587f998fe2101410c5b7feccc2cac76427d1debc5e
-updated: 2017-10-12T09:49:07.018525895+08:00
+hash: 4aee0d8707ec71868d9e5cb7269bbb1ba82db98330610f5e8b159c643670e2f3
+updated: 2017-10-12T10:17:29.024460809+08:00
 imports:
 - name: github.com/appleboy/gin-jwt
   version: f7347d7c16fc8297bf5b7215b9e4847a5ca05d90
@@ -27,9 +27,10 @@ imports:
 - name: github.com/gin-contrib/sse
   version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/gin
-  version: d459835d2b077e44f7c9b453505ee29881d5d12d
+  version: b8b68314faa067acae5b17c828127b04af51ebe2
   subpackages:
   - binding
+  - json
   - render
 - name: github.com/golang/protobuf
   version: 130e6b02ab059e7b717a096f397c5b60111cae74
@@ -43,6 +44,8 @@ imports:
   - dialects/sqlite
 - name: github.com/jinzhu/inflection
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/json-iterator/go
+  version: 6240e1e7983a85228f7fd9c3e1b6932d46ec58e2
 - name: github.com/Knetic/govaluate
   version: d216395917cc49052c7c7094cf57f09657ca08a8
 - name: github.com/lib/pq

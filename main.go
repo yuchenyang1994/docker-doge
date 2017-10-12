@@ -10,6 +10,8 @@ import (
 
 	"docker-doge/handler"
 
+	"docker-doge/handler/validators"
+
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -22,6 +24,7 @@ func runServer() {
 	r.Use(gin.Logger())                         // 日志处理
 	r.Use(gin.Recovery())                       // 500不处理
 	jwtMiddleWare := configs.NewJwtMiddleWare() // jwt中间件
+	validators.RegisterV()                      // 注册验证器
 	middleware.NewJwtAuthorizer(e)              // jwt权限校验器
 	auth := r.Group("/auth")
 	auth.Use(jwtMiddleWare.MiddlewareFunc())
