@@ -1,5 +1,5 @@
 hash: 14f5ff5481f97b6e7d8ae4587f998fe2101410c5b7feccc2cac76427d1debc5e
-updated: 2017-09-10T13:18:46.04284867+08:00
+updated: 2017-10-12T09:49:07.018525895+08:00
 imports:
 - name: github.com/appleboy/gin-jwt
   version: f7347d7c16fc8297bf5b7215b9e4847a5ca05d90
@@ -13,7 +13,7 @@ imports:
   - rbac
   - util
 - name: github.com/casbin/gorm-adapter
-  version: 8e3239544c1cf4bab113bd2311d8d0842086abe8
+  version: e56c6daebd5e8c657caf3bdf3a647803cf7b242d
 - name: github.com/docker/docker
   version: 90d35abf7b3535c1c319c872900fbd76374e521c
   subpackages:
@@ -21,9 +21,9 @@ imports:
 - name: github.com/docker/go-units
   version: 0dadbb0345b35ec7ef35e228dabb8de89a65bf52
 - name: github.com/fsouza/go-dockerclient
-  version: 98edf3edfae6a6500fecc69d2bcccf1302544004
+  version: d2a6d0596004cc01062a2a068540b817f911e6dc
 - name: github.com/gin-contrib/authz
-  version: f37dc3b36f6c085dfe454792a21a9f4915e4b44d
+  version: c52461b5085d8b8e1f69dc7f8ebd63ecb29b26aa
 - name: github.com/gin-contrib/sse
   version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/gin
@@ -32,7 +32,7 @@ imports:
   - binding
   - render
 - name: github.com/golang/protobuf
-  version: 17ce1425424ab154092bbb43af630bd647f3bb0d
+  version: 130e6b02ab059e7b717a096f397c5b60111cae74
   subpackages:
   - proto
 - name: github.com/gorilla/websocket
@@ -46,23 +46,23 @@ imports:
 - name: github.com/Knetic/govaluate
   version: d216395917cc49052c7c7094cf57f09657ca08a8
 - name: github.com/lib/pq
-  version: e42267488fe361b9dc034be7a6bffef5b195bceb
+  version: 017e4c14d80628353eaee677a1aeffe47a10c0dc
   subpackages:
   - oid
 - name: github.com/mattn/go-isatty
-  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+  version: a5cdd64afdee435007ee3e9f6ed4684af949d568
 - name: github.com/mattn/go-sqlite3
-  version: 05548ff55570cdb9ac72ff4a25a3b5e77a6fb7e5
+  version: 5160b48509cf5c877bc22c11c373f8c7738cdb38
 - name: github.com/ugorji/go
-  version: 8c0409fcbb70099c748d71f714529204975f6c3f
+  version: c8210b25554128b6d32628ab706ac43706e37ae0
   subpackages:
   - codec
 - name: golang.org/x/net
-  version: 66aacef3dd8a676686c7ae3716979581e8b03c47
+  version: a04bdaca5b32abe1c069418fb7088ae607de5bd0
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: a5054c7c1385fd50d9394475365355a87a7873ec
+  version: ebfc5b4631820b793c9010c87fd8fef0f39eb082
   subpackages:
   - unix
 - name: gopkg.in/dgrijalva/jwt-go.v3
