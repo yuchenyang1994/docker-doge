@@ -96,13 +96,13 @@ func NewJwtAuthorizer(e *casbin.Enforcer) gin.HandlerFunc {
 }
 
 // JwtAuthorizer stores the casbin handler
-type BasicAuthorizer struct {
+type RoleBaseAuthorizer struct {
 	enforcer *casbin.Enforcer
 }
 
 // GetUserName gets the username from the request.
 // Currently, only HTTP basic authentication is supported
-func (a *BasicAuthorizer) GetUserRole(c *gin.Context) (*db.User, []string) {
+func (a *RoleBaseAuthorizer) GetUserRole(c *gin.Context) (*db.User, []string) {
 	d := db.GetDbInstance()
 	claims := jwt.ExtractClaims(c)
 	strUserId := claims["id"].(string)
@@ -115,7 +115,7 @@ func (a *BasicAuthorizer) GetUserRole(c *gin.Context) (*db.User, []string) {
 
 // CheckPermission checks the user/method/path combination from the request.
 // Returns true (permission granted) or false (permission forbidden)
-func (a *BasicAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bool {
+func (a *RoleBaseAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bool {
 	user, roles := a.GetUserRole(c)
 	method := r.Method
 	path := r.URL.Path
@@ -123,9 +123,7 @@ func (a *BasicAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bool 
 	usergroup := db.UserGroup{}
 	d.Find(&usergroup, user.UserGroupID)
 	for _, role := range roles {
-		if role == ROLE_SUPPER {
-			return true
-		} else if a.enforcer.Enforce(role, path, method) && a.enforcer.Enforce(usergroup.GroupName, path, "GET") {
+		if a.enforcer.Enforce(groupname, role, path, method) {
 			return true
 		}
 	}
@@ -133,7 +131,7 @@ func (a *BasicAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bool 
 }
 
 // RequirePermission returns the 403 Forbidden to the client
-func (a *BasicAuthorizer) RequirePermission(w http.ResponseWriter) {
+func (a *RoleBaseAuthorizer) RequirePermission(w http.ResponseWriter) {
 	w.WriteHeader(403)
 	w.Write([]byte("403 Forbidden\n"))
 }
