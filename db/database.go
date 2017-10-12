@@ -3,12 +3,15 @@ package db
 import (
 	"log"
 
+	"docker-doge/configs"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func GetDbInstance() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "data.db")
+	conf := configs.Conf()
+	db, err := gorm.Open(conf.DATABASE_BACKEND, conf.DATABASE_URI)
 	if err != nil {
 		log.Fatal("db error")
 	}
