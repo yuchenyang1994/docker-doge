@@ -31,6 +31,7 @@ func MigrationDB(db *gorm.DB) {
 }
 
 func CreateUserGroup(db *gorm.DB) {
-	u := &UserGroup{GroupName: "test"}
+	u := UserGroup{GroupName: "test"}
 	db.NewRecord(u)
+	db.Create(&u)
 }

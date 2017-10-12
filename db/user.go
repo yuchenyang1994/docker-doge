@@ -26,7 +26,7 @@ func (user *User) HashPassword() {
 func (user *User) Insert(db *gorm.DB) error {
 	defer db.Close()
 	user.HashPassword()
-	db.NewRecord(user)
+	db.Create(user)
 	return db.Error
 }
 

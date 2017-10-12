@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"docker-doge/db"
 	"net/http"
 	"sync"
 
@@ -54,11 +53,8 @@ type BasicAuthorizer struct {
 // Currently, only HTTP basic authentication is supported
 func (a *BasicAuthorizer) GetUserRole(c *gin.Context) []string {
 	claims := jwt.ExtractClaims(c)
-	userID := claims["id"].(uint)
-	user := &db.User{}
-	d := db.GetDbInstance()
-	d.First(user, userID)
-	roles := a.enforcer.GetRolesForUser(user.Email)
+	username := claims["id"].(string)
+	roles := a.enforcer.GetRolesForUser(username)
 	return roles
 }
 
