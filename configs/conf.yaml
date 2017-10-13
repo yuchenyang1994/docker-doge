@@ -1,0 +1,7 @@
+debug: True
+port: "8080"
+docker_remote_uri: "unix:///var/run/docker.sock"
+database_backend: "sqlite3"
+database_uri: "data.db"
+scret_key: "secret key"
+realm: "test zone"
