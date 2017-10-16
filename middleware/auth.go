@@ -32,9 +32,11 @@ const (
 
 // 权限校验器
 func GetAuthzInstance() *casbin.Enforcer {
-	conf := configs.Conf()
-	adpter := gormadapter.NewAdapter(conf.DATABASE_BACKEND, conf.DATABASE_URI, true)
-	enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
+	once.Do(func() {
+		conf := configs.Conf()
+		adpter := gormadapter.NewAdapter(conf.DATABASE_BACKEND, conf.DATABASE_URI, true)
+		enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
+	})
 	return enforcer
 }
 
