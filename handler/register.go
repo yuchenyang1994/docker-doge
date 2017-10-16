@@ -8,6 +8,8 @@ import (
 
 	"net/http"
 
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/jinzhu/gorm"
@@ -33,7 +35,8 @@ func registerUser(email string, password string, groupID uint, d *gorm.DB) bool 
 	if err := user.Insert(d); err == nil {
 		e := middleware.GetAuthzInstance()
 		// 注册用户角色
-		if ok := e.AddRoleForUser(user.Email, middleware.ROLE_USER); ok {
+		strUserId := strconv.Itoa(int(user.ID))
+		if ok := e.AddRoleForUser(strUserId, middleware.ROLE_USER); ok {
 			return true
 		}
 		return false

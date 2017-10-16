@@ -87,9 +87,9 @@ func JwtUnauthorized(c *gin.Context, code int, message string) {
 // NewJwtAuthorizer returns the authorizer, uses a Casbin enforcer as gin-JWT
 func NewJwtAuthorizer(e *casbin.Enforcer) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		a := &BasicAuthorizer{enforcer: e}
+		a := &RoleBaseAuthorizer{enforcer: e}
 
-		if !a.CheckPermission(c.Request, c) {
+		if !a.CheckPermission(c) {
 			a.RequirePermission(c.Writer)
 		}
 	}
@@ -109,13 +109,14 @@ func (a *RoleBaseAuthorizer) GetUserRole(c *gin.Context) (*db.User, []string) {
 	user := &db.User{}
 	userid, _ := strconv.ParseUint(strUserId, 0, 64)
 	d.First(user, userid)
-	roles := a.enforcer.GetRolesForUser(user.Email)
+	roles := a.enforcer.GetRolesForUser(strUserId)
 	return user, roles
 }
 
 // CheckPermission checks the user/method/path combination from the request.
 // Returns true (permission granted) or false (permission forbidden)
-func (a *RoleBaseAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bool {
+func (a *RoleBaseAuthorizer) CheckPermission(c *gin.Context) bool {
+	r := c.Request
 	user, roles := a.GetUserRole(c)
 	method := r.Method
 	path := r.URL.Path
@@ -123,7 +124,7 @@ func (a *RoleBaseAuthorizer) CheckPermission(r *http.Request, c *gin.Context) bo
 	usergroup := db.UserGroup{}
 	d.Find(&usergroup, user.UserGroupID)
 	for _, role := range roles {
-		if a.enforcer.Enforce(groupname, role, path, method) {
+		if a.enforcer.Enforce(usergroup.GroupName, role, path, method) {
 			return true
 		}
 	}
