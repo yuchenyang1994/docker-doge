@@ -45,7 +45,8 @@ func GetUserGroupsHandler(c *gin.Context) {
 
 func AddPolicyForUserGroups(groupName string) {
 	e := middleware.GetAuthzInstance()
-	containerDomin := fmt.Sprintf("/contarner/%s*", groupName)
+	// 容器相关权限
+	containerDomin := fmt.Sprintf("/contarners/%s*", groupName)
 	// ADMIN Policy
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "GET")
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "POST")
@@ -58,4 +59,13 @@ func AddPolicyForUserGroups(groupName string) {
 	// Default Policy
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "GET")
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "POST")
+	// 设置相关权限
+	configUserGroupDomin := fmt.Sprintf("/configs/userGroup/%s*", groupName)
+	// ADMIN Policy
+	e.AddPolicy(groupName, middleware.ROLE_ADMIN, configUserGroupDomin, "GET")
+	e.AddPolicy(groupName, middleware.ROLE_ADMIN, configUserGroupDomin, "PUT")
+	// Leader Policy
+	e.AddPolicy(groupName, middleware.ROLE_LEADER, configUserGroupDomin, "GET")
+	// Default Policy
+	e.AddPolicy(groupName, middleware.ROLE_USER, configUserGroupDomin, "GET")
 }
