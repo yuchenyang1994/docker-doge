@@ -24,14 +24,12 @@ func (user *User) HashPassword() {
 }
 
 func (user *User) Insert(db *gorm.DB) error {
-	defer db.Close()
 	user.HashPassword()
 	db.Create(user)
 	return db.Error
 }
 
 func (user *User) GetUserByPassword(db *gorm.DB) (*User, bool) {
-	defer db.Close()
 	user.HashPassword()
 	u := db.Where("email=? AND password=?", user.Email, user.Password).First(user)
 	if u.RecordNotFound() == true {

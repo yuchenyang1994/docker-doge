@@ -6,4 +6,6 @@ import (
 
 func RegisterV() {
 	binding.Validator.RegisterValidation("RePassword", rePassword)
+	binding.Validator.RegisterValidation("hasGroupName", hasGroupName)
+	binding.Validator.RegisterValidation("hasGroupById", hasGroupById)
 }

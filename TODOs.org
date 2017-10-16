@@ -1,14 +1,15 @@
-* Docker-Doge TODO List
+* Docker-Doge GOLBAL TODO LIST
 ** TODO BACKEND go后台 [%]                                   :projects:doge:
 *** TODO 用户相关 [1/2]
 **** DONE 登录注册 
      CLOSED: [2017-10-16 一 13:24]
 **** TODO 用户组相关(超级管理员)
-     DEADLINE: <2017-10-15 日> SCHEDULED: <2017-10-16 一>
+     DEADLINE: <2017-10-18 三> SCHEDULED: <2017-10-16 一>
      - 增加用户组
      - 删除用户组
      - 查找用户组
 *** TODO 容器相关 [/]
+    DEADLINE: <2017-10-28 六>
 **** TODO 容器管理
      - 增加容器
      - 删除容器
