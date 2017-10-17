@@ -1,6 +1,7 @@
 package main
 
 import "docker-doge/db"
+import "docker-doge/handler"
 
 // 迁移数据库
 func migrate() {
@@ -12,4 +13,12 @@ func migrate() {
 func createUserGroup() {
 	d := db.GetDbInstance()
 	db.CreateUserGroup(d)
+}
+
+func migratePolicy() {
+	ug := db.UserGroup{}
+	userGroups := ug.GetUserGroups()
+	for _, usergroup := range userGroups {
+		handler.AddPolicyForUserGroups(usergroup.GroupName)
+	}
 }

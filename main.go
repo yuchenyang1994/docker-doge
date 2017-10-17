@@ -35,8 +35,10 @@ func main() {
 			runServer()
 		case "migrate":
 			migrate()
-		case "createrole":
+		case "creategroup":
 			createUserGroup()
+		case "migrate_policy":
+			migratePolicy()
 		}
 	} else {
 		fmt.Println(useage)

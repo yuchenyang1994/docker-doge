@@ -8,20 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// URL route for app
 func URL(r *gin.Engine) {
-
-	e := middleware.GetAuthzInstance()
-	jwtAuthzMiddleWare := middleware.NewJwtAuthorizer(e) // jwt权限校验器
-	jwtMiddleWare := middleware.NewJwtMiddleWare()       // jwt中间件
-	r.Use(gin.Logger())                                  // 日志处理
-	r.Use(gin.Recovery())                                // 500不处理
+	jwtMiddleWare := middleware.NewJwtMiddleWare() // jwt中间件
+	r.Use(gin.Logger())                            // 日志处理
+	r.Use(gin.Recovery())                          // 500不处理
 	// API
 	r.POST("/login", jwtMiddleWare.LoginHandler)
 	r.POST("/register", handler.RegisterHandler)
-	r.GET("/userGroups", handler.CreateUserGroupHandler)
+	r.GET("/userGroups", handler.GetUserGroupsHandler)
 	// configs
 	configs := r.Group("/configs")
-	configs.Use(jwtMiddleWare.MiddlewareFunc(), jwtAuthzMiddleWare)
+	configs.Use(jwtMiddleWare.MiddlewareFunc())
 	{
 		configs.POST("/userGroups", handler.CreateUserGroupHandler)
 		configs.DELETE("/UserGroups", handler.RemoveUserGroupHandler)

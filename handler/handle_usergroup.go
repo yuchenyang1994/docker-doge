@@ -20,7 +20,8 @@ func CreateUserGroupHandler(c *gin.Context) {
 	if err := c.ShouldBindWith(&userGroupVlidators, binding.JSON); err == nil {
 		d := db.GetDbInstance()
 		usergroup := db.UserGroup{GroupName: userGroupVlidators.GroupName}
-		d.Create(usergroup)
+		d.NewRecord(&usergroup)
+		d.Create(&usergroup)
 		// Add this usergroup policy
 		AddPolicyForUserGroups(usergroup.GroupName)
 		c.JSON(http.StatusOK, gin.H{"message": "success", "status": http.StatusOK})
@@ -30,10 +31,10 @@ func CreateUserGroupHandler(c *gin.Context) {
 }
 
 func RemoveUserGroupHandler(c *gin.Context) {
-	var userGroupIdVlidator validators.UserGroupIdVlidator
-	if err := c.ShouldBindWith(&userGroupIdVlidator, binding.JSON); err == nil {
+	var userGroupIDVlidator validators.UserGroupIdVlidator
+	if err := c.ShouldBindWith(&userGroupIDVlidator, binding.JSON); err == nil {
 		d := db.GetDbInstance()
-		d.Delete(db.UserGroup{}, userGroupIdVlidator.GroupId)
+		d.Delete(db.UserGroup{}, userGroupIDVlidator.GroupId)
 	}
 }
 
@@ -59,7 +60,7 @@ func AddPolicyForUserGroups(groupName string) {
 	// Default Policy
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "GET")
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, containerDomin, "POST")
-	// 设置相关权限
+	// 设置用户组相关权限
 	configUserGroupDomin := fmt.Sprintf("/configs/userGroup/%s*", groupName)
 	// ADMIN Policy
 	e.AddPolicy(groupName, middleware.ROLE_ADMIN, configUserGroupDomin, "GET")
@@ -68,5 +69,10 @@ func AddPolicyForUserGroups(groupName string) {
 	e.AddPolicy(groupName, middleware.ROLE_LEADER, configUserGroupDomin, "GET")
 	// Default Policy
 	e.AddPolicy(groupName, middleware.ROLE_USER, configUserGroupDomin, "GET")
-	// config
+	// auth相关权限
+	e.AddPolicy(groupName, middleware.ROLE_ADMIN, "/auth*", "GET")
+	e.AddPolicy(groupName, middleware.ROLE_ADMIN, "auth*", "POST")
+	e.AddPolicy(groupName, middleware.ROLE_ADMIN, "auth*", "PUT")
+	e.AddPolicy(groupName, middleware.ROLE_USER, "/auth*", "GET")
+	e.AddPolicy(groupName, middleware.ROLE_LEADER, "/auth*", "GET")
 }

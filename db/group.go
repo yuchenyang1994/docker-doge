@@ -4,31 +4,36 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 用户组
+// UserGroup Db
 type UserGroup struct {
 	gorm.Model
 	GroupName string `gorm:"size:60"`
 	Users     []User
 }
 
+// UserGroupById Json format struct
 type UserGroupById struct {
 	GroupID   uint   `json:"groupId"`
 	GroupName string `json:"groupName"`
 }
 
+// GetUserGroups return list for Json format struct
 func (usergroup UserGroup) GetUserGroups() []UserGroupById {
 	db := GetDbInstance()
 	groups := []UserGroup{}
 	db.Find(&groups)
 	groupByIds := []UserGroupById{}
 	for _, group := range groups {
-		groupByid := UserGroupById{GroupID: group.ID, GroupName: group.GroupName}
-		groupByIds = append(groupByIds, groupByid)
+		if group.GroupName != "ROOT" {
+			groupByid := UserGroupById{GroupID: group.ID, GroupName: group.GroupName}
+			groupByIds = append(groupByIds, groupByid)
+		}
 	}
 	return groupByIds
 
 }
 
+// GetUserGroupByName balabala
 func (usergroup *UserGroup) GetUserGroupByName() (UserGroupById, bool) {
 	db := GetDbInstance()
 	db.First(usergroup, "group_name = ?", usergroup.GroupName)
@@ -39,6 +44,7 @@ func (usergroup *UserGroup) GetUserGroupByName() (UserGroupById, bool) {
 	return userGroupbyId, true
 }
 
+// GetUserGroupById  balabala
 func (usergroup *UserGroup) GetUserGroupById() (UserGroupById, bool) {
 	db := GetDbInstance()
 	db.First(usergroup, usergroup.ID)

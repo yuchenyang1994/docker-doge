@@ -7,6 +7,7 @@ import (
 	validator "gopkg.in/go-playground/validator.v8"
 )
 
+// UserGroupVlidator Vlidator for create usergroup
 type UserGroupVlidator struct {
 	GroupName string `json:"groupName" binding:"required,hasGroupName"`
 }
@@ -16,13 +17,14 @@ func hasGroupName(v *validator.Validate, topStruct reflect.Value, currentStructO
 	d := db.GetDbInstance()
 	if groupName, ok := field.Interface().(string); ok {
 		usergroup := db.UserGroup{}
-		if notFound := d.First(&usergroup, "group_name = ?", groupName).RecordNotFound(); notFound != true {
+		if notFound := d.First(&usergroup, "group_name = ?", groupName).RecordNotFound(); notFound {
 			return true
 		}
 	}
 	return false
 }
 
+// UserGroupIdVlidator Vlidator for query UserGroupId
 type UserGroupIdVlidator struct {
 	GroupId uint `json:"groupId" binding:"required,hasGroupById"`
 }
