@@ -83,8 +83,7 @@ func JwtAuthorizatorHandler(userID string, c *gin.Context) bool {
 
 // JwtUnauthorized on error
 func JwtUnauthorized(c *gin.Context, code int, message string) {
-	c.JSON(code, gin.H{
-		"code":    code,
+	c.JSON(code, gin.H{"code": code,
 		"message": message,
 	})
 }
@@ -96,7 +95,7 @@ func checkPermission(c *gin.Context, enforcer *casbin.Enforcer, d *gorm.DB, user
 	method := r.Method
 	path := r.URL.Path
 	usergroup := db.UserGroup{}
-	d.Find(&usergroup, user.UserGroupID)
+	d.First(&usergroup, user.UserGroupID)
 	for _, role := range roles {
 		return enforcer.Enforce(usergroup.GroupName, role, path, method)
 	}

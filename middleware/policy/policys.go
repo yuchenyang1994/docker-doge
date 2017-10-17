@@ -22,8 +22,8 @@ func CreatePolicys(groupName string) [][]string {
 		[]string{groupName, middleware.ROLE_ADMIN, containerDomin, "GET"},
 		// ------ auth -------
 		[]string{groupName, middleware.ROLE_ADMIN, "/auth*", "GET"},
-		[]string{groupName, middleware.ROLE_ADMIN, "auth*", "POST"},
-		[]string{groupName, middleware.ROLE_ADMIN, "auth*", "PUT"},
+		[]string{groupName, middleware.ROLE_ADMIN, "/auth*", "POST"},
+		[]string{groupName, middleware.ROLE_ADMIN, "/auth*", "PUT"},
 		// user and leader
 		[]string{groupName, middleware.ROLE_USER, "/auth*", "GET"},
 		[]string{groupName, middleware.ROLE_LEADER, "/auth*", "GET"},

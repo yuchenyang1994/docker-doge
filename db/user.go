@@ -38,3 +38,13 @@ func (user *User) GetUserByPassword(db *gorm.DB) (*User, bool) {
 		return user, true
 	}
 }
+
+// GetBelongToUserGroup ...
+func (user *User) GetBelongToUserGroup(db *gorm.DB) (UserGroup, bool) {
+	usergroup := UserGroup{}
+	db = db.First(&usergroup, user.UserGroupID)
+	if !db.RecordNotFound() {
+		return usergroup, true
+	}
+	return usergroup, false
+}
