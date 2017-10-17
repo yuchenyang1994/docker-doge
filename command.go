@@ -1,7 +1,9 @@
 package main
 
-import "docker-doge/db"
-import "docker-doge/handler"
+import (
+	"docker-doge/db"
+	"docker-doge/middleware/policy"
+)
 
 // 迁移数据库
 func migrate() {
@@ -19,6 +21,6 @@ func migratePolicy() {
 	ug := db.UserGroup{}
 	userGroups := ug.GetUserGroups()
 	for _, usergroup := range userGroups {
-		handler.AddPolicyForUserGroups(usergroup.GroupName)
+		policy.AddPolicyForUserGroups(usergroup.GroupName)
 	}
 }

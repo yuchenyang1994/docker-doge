@@ -21,8 +21,9 @@ func URL(r *gin.Engine) {
 	configs := r.Group("/configs")
 	configs.Use(jwtMiddleWare.MiddlewareFunc())
 	{
-		configs.POST("/userGroups", handler.CreateUserGroupHandler)
-		configs.DELETE("/UserGroups", handler.RemoveUserGroupHandler)
+		configs.POST("/:groupName/userGroups", handler.CreateUserGroupHandler)
+		configs.DELETE("/:groupName/UserGroups", handler.RemoveUserGroupHandler)
+		configs.PUT("/:groupName/UserGroups", handler.ChangeUserGroupNameHandler)
 	}
 	// Auth
 	auth := r.Group("/auth")
