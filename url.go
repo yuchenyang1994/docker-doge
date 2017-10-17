@@ -18,12 +18,12 @@ func URL(r *gin.Engine) {
 	r.POST("/register", handler.RegisterHandler)
 	r.GET("/userGroups", handler.GetUserGroupsHandler)
 	// configs
-	configs := r.Group("/configs")
+	configs := r.Group("/super")
 	configs.Use(jwtMiddleWare.MiddlewareFunc())
 	{
-		configs.POST("/:groupName/userGroups", handler.CreateUserGroupHandler)
-		configs.DELETE("/:groupName/UserGroups", handler.RemoveUserGroupHandler)
-		configs.PUT("/:groupName/UserGroups", handler.ChangeUserGroupNameHandler)
+		configs.POST("/userGroups", handler.CreateUserGroupHandler)
+		configs.DELETE("/userGroups", handler.RemoveUserGroupHandler)
+		configs.PUT("/userGroups", handler.ChangeUserGroupNameHandler)
 	}
 	// Auth
 	auth := r.Group("/auth")
