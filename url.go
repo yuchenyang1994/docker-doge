@@ -38,4 +38,12 @@ func URL(r *gin.Engine) {
 		})
 		auth.GET("/refresh_token", jwtMiddleWare.RefreshHandler)
 	}
+	// permission
+	permission := r.Group("/permission")
+	permission.Use(jwtMiddleWare.MiddlewareFunc())
+	{
+		permission.GET("/:groupName/userInfo", handler.GetUsersInfos)
+		permission.POST("/:groupName/userRoles", handler.AddRoleForUsers)
+		permission.DELETE("/:groupName/userRoles", handler.RemoveRoleForUsers)
+	}
 }
