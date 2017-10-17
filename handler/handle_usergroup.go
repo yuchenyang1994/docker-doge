@@ -68,4 +68,5 @@ func AddPolicyForUserGroups(groupName string) {
 	e.AddPolicy(groupName, middleware.ROLE_LEADER, configUserGroupDomin, "GET")
 	// Default Policy
 	e.AddPolicy(groupName, middleware.ROLE_USER, configUserGroupDomin, "GET")
+	// config
 }
