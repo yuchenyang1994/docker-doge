@@ -40,7 +40,7 @@ func GetAuthzInstance() *casbin.Enforcer {
 	return enforcer
 }
 
-// NewJwtMiddleWare a GinJwtMiddleWare
+// NewJwtMiddleWare a GinJwtMiddleWare with casbin
 func NewJwtMiddleWare() *jwt.GinJWTMiddleware {
 	conf := configs.Conf()
 	j := &jwt.GinJWTMiddleware{
