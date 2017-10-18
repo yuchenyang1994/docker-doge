@@ -17,6 +17,7 @@ NAME:
 USAGE:
     run : run the docker-doge server
     migrate: miagate docker-doge database
+    migrate_policy: migrate plicys
 `
 
 func runServer() {

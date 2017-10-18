@@ -13,7 +13,7 @@ func AddRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
 		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(vAddRole.UserID), vAddRole.RoleName)
+		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -24,13 +24,13 @@ func AddRoleForUsers(c *gin.Context) {
 	}
 }
 
-// AddRoleForUsers ....
+// RemoveRoleForUsers ....
 func RemoveRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
 		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(vAddRole.UserID), vAddRole.RoleName)
-		e.DeleteRoleForUser(strconv.Itoa(vAddRole.UserID), vAddRole.RoleName)
+		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
+		e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -42,6 +42,7 @@ func RemoveRoleForUsers(c *gin.Context) {
 
 }
 
+// GetUsersInfos ...
 func GetUsersInfos(c *gin.Context) {
 	groupName := c.DefaultQuery("groupName", "SUPER")
 	e := middleware.GetAuthzInstance()
