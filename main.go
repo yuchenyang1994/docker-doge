@@ -6,6 +6,8 @@ import (
 
 	"docker-doge/handler/validators"
 
+	"docker-doge/middleware"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -22,6 +24,7 @@ USAGE:
 
 func runServer() {
 	r := gin.New()
+	middleware.GetAuthzInstance()
 	validators.RegisterV() // 注册验证器
 	URL(r)
 	r.Run() // listen and serve on 0.0.0.0:8080
@@ -40,6 +43,8 @@ func main() {
 			createUserGroup()
 		case "migrate_policy":
 			migratePolicy()
+		case "create_root":
+			createRoot()
 		}
 	} else {
 		fmt.Println(useage)

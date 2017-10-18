@@ -13,7 +13,7 @@ func AddRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
 		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
+		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -29,8 +29,7 @@ func RemoveRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
 		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
-		e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
+		ok := e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -44,7 +43,7 @@ func RemoveRoleForUsers(c *gin.Context) {
 
 // GetUsersInfos ...
 func GetUsersInfos(c *gin.Context) {
-	groupName := c.DefaultQuery("groupName", "SUPER")
+	groupName := c.Param("groupName")
 	e := middleware.GetAuthzInstance()
 	userinfoService := services.NewUserInfoService(e, groupName)
 	userinfos := userinfoService.GetUserInfos()
