@@ -26,12 +26,13 @@ func CreateDb() *gorm.DB {
 	once.Do(func() {
 		conf := configs.Conf()
 		db, err = gorm.Open(conf.DATABASE_BACKEND, conf.DATABASE_URI)
+		db.DB().SetMaxIdleConns(10)
+		db.DB().SetMaxOpenConns(100)
 		if err != nil {
 			log.Fatal("db error")
 		}
 	})
 	return db
-
 }
 
 func GetTestDB() *gorm.DB {
