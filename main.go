@@ -26,8 +26,8 @@ USAGE:
 
 func runServer() {
 	r := gin.Default()
-	r.Use(middleware.CasbinAuther())
-	r.Use(db.Database())
+	r.Use(middleware.CasbinAuth())
+	r.Use(db.DataBase())
 	validators.RegisterV() // 注册验证器
 	URL(r)
 	r.Run() // listen and serve on 0.0.0.0:8080
@@ -42,8 +42,6 @@ func main() {
 			runServer()
 		case "migrate":
 			migrate()
-		case "creategroup":
-			createUserGroup()
 		case "migrate_policy":
 			migratePolicy()
 		case "create_root":

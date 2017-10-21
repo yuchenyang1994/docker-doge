@@ -83,11 +83,11 @@ func JwtAuthenticatorHandler(username string, password string, c *gin.Context) (
 
 // JwtAuthorizatorHandler checkPermission for User
 func JwtAuthorizatorHandler(userID string, c *gin.Context) bool {
-	d := db.GetDbInstance()
+	d := db.GetDbInstance(c)
 	uUserID, _ := strconv.ParseUint(userID, 0, 64)
 	user := db.User{}
 	d.First(&user, uUserID)
-	e := GetAuthzInstance()
+	e := GetAuthzInstance(c)
 	userRoles := e.GetRolesForUser(userID)
 	return checkPermission(c, e, d, &user, userRoles)
 }

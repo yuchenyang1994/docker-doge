@@ -45,7 +45,7 @@ func RemoveRoleForUsers(c *gin.Context) {
 func GetUsersInfos(c *gin.Context) {
 	groupName := c.Param("groupName")
 	e := middleware.GetAuthzInstance(c)
-	userinfoService := services.NewUserInfoService(e, groupName)
+	userinfoService := services.NewUserInfoService(e, groupName, c)
 	userinfos := userinfoService.GetUserInfos()
 	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "data": userinfos})
 }

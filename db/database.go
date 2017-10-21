@@ -25,7 +25,7 @@ func GetDbInstance(c *gin.Context) *gorm.DB {
 func CreateDb() *gorm.DB {
 	once.Do(func() {
 		conf := configs.Conf()
-		db, err := gorm.Open(conf.DATABASE_BACKEND, conf.DATABASE_URI)
+		db, err = gorm.Open(conf.DATABASE_BACKEND, conf.DATABASE_URI)
 		if err != nil {
 			log.Fatal("db error")
 		}

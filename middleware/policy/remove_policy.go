@@ -6,7 +6,7 @@ import (
 
 // RemovePolicyForUserGroups remove policy
 func RemovePolicyForUserGroups(groupName string) {
-	e := middleware.GetAuthzInstance()
+	e := middleware.CreateAuthz()
 	policys := CreatePolicys(groupName)
 	for _, policy := range policys {
 		e.RemovePolicy(policy)

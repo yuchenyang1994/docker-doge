@@ -34,7 +34,7 @@ func NewUserInfoService(e *casbin.Enforcer, groupName string, c *gin.Context) *U
 
 // GetUserInfos ...
 func (service *UserInfoService) GetUserInfos() []JsonUserInfos {
-	d := db.GetDbInstance(c)
+	d := db.GetDbInstance(service.c)
 	if service.GroupName == "Super" {
 		usergroups := []db.UserGroup{}
 		d.Find(&usergroups)

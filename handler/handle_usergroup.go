@@ -18,7 +18,7 @@ func CreateUserGroupHandler(c *gin.Context) {
 	var vUserGroup validators.UserGroupVlidator
 	if err := c.BindWith(&vUserGroup, binding.JSON); err == nil {
 		groupName := vUserGroup.GroupName
-		d := db.GetDbInstance()
+		d := db.GetDbInstance(c)
 		usergroup := db.UserGroup{GroupName: groupName}
 		d.NewRecord(&usergroup)
 		d.Create(&usergroup)
@@ -86,8 +86,9 @@ func ChangeUserGroupNameHandler(c *gin.Context) {
 
 // GetUserGroupsHandler ...
 func GetUserGroupsHandler(c *gin.Context) {
+	d := db.GetDbInstance(c)
 	usergroup := db.UserGroup{}
-	usergroups := usergroup.GetUserGroups()
+	usergroups := usergroup.GetUserGroups(d)
 	if len(usergroups) > 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   http.StatusOK,

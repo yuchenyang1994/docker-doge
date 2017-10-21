@@ -40,7 +40,7 @@ func CreatePolicys(groupName string) [][]string {
 }
 
 func AddPolicyForUserGroups(groupName string) {
-	e := middleware.GetAuthzInstance()
+	e := middleware.CreateAuthz()
 	policys := CreatePolicys(groupName)
 	for _, policy := range policys {
 		e.AddPolicy(policy)
