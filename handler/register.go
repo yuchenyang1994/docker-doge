@@ -18,7 +18,7 @@ import (
 func RegisterHandler(c *gin.Context) {
 	var singin validators.SingupVlidator
 	if err := c.ShouldBindWith(&singin, binding.JSON); err == nil {
-		d := db.GetDbInstance()
+		d := db.GetDbInstance(c)
 		if ok := registerUser(singin.Email, singin.Password, singin.UserGroupID, d); ok {
 			c.JSON(http.StatusOK, gin.H{"message": "sussess", "status": http.StatusOK})
 		} else {

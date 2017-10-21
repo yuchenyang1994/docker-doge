@@ -12,7 +12,7 @@ import "docker-doge/handler/services"
 func AddRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
-		e := middleware.GetAuthzInstance()
+		e := middleware.GetAuthzInstance(c)
 		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
@@ -28,7 +28,7 @@ func AddRoleForUsers(c *gin.Context) {
 func RemoveRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
-		e := middleware.GetAuthzInstance()
+		e := middleware.GetAuthzInstance(c)
 		ok := e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
@@ -44,7 +44,7 @@ func RemoveRoleForUsers(c *gin.Context) {
 // GetUsersInfos ...
 func GetUsersInfos(c *gin.Context) {
 	groupName := c.Param("groupName")
-	e := middleware.GetAuthzInstance()
+	e := middleware.GetAuthzInstance(c)
 	userinfoService := services.NewUserInfoService(e, groupName)
 	userinfos := userinfoService.GetUserInfos()
 	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "data": userinfos})

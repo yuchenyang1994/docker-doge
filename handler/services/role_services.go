@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/casbin/casbin"
+	"github.com/gin-gonic/gin"
 )
 
 type (
@@ -22,17 +23,18 @@ type (
 	UserInfoService struct {
 		Enforcer  *casbin.Enforcer
 		GroupName string
+		c         *gin.Context
 	}
 )
 
-func NewUserInfoService(e *casbin.Enforcer, groupName string) *UserInfoService {
-	service := UserInfoService{e, groupName}
+func NewUserInfoService(e *casbin.Enforcer, groupName string, c *gin.Context) *UserInfoService {
+	service := UserInfoService{e, groupName, c}
 	return &service
 }
 
 // GetUserInfos ...
 func (service *UserInfoService) GetUserInfos() []JsonUserInfos {
-	d := db.GetDbInstance()
+	d := db.GetDbInstance(c)
 	if service.GroupName == "Super" {
 		usergroups := []db.UserGroup{}
 		d.Find(&usergroups)
