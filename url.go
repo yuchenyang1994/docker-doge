@@ -11,8 +11,6 @@ import (
 // URL route for app
 func URL(r *gin.Engine) {
 	jwtMiddleWare := middleware.NewJwtMiddleWare() // jwt中间件
-	r.Use(gin.Logger())                            // 日志处理
-	r.Use(gin.Recovery())                          // 500不处理
 	// API
 	r.POST("/login", jwtMiddleWare.LoginHandler)
 	r.POST("/register", handler.RegisterHandler)

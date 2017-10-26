@@ -18,8 +18,7 @@ type UserGroupById struct {
 }
 
 // GetUserGroups return list for Json format struct
-func (usergroup UserGroup) GetUserGroups() []UserGroupById {
-	db := GetDbInstance()
+func (usergroup UserGroup) GetUserGroups(db *gorm.DB) []UserGroupById {
 	groups := []UserGroup{}
 	db.Find(&groups)
 	groupByIds := []UserGroupById{}
@@ -34,8 +33,7 @@ func (usergroup UserGroup) GetUserGroups() []UserGroupById {
 }
 
 // GetUserGroupByName balabala
-func (usergroup *UserGroup) GetUserGroupByName() (UserGroupById, bool) {
-	db := GetDbInstance()
+func (usergroup *UserGroup) GetUserGroupByName(db *gorm.DB) (UserGroupById, bool) {
 	db.First(usergroup, "group_name = ?", usergroup.GroupName)
 	userGroupbyId := UserGroupById{GroupName: usergroup.GroupName, GroupID: usergroup.ID}
 	if db.RecordNotFound() == true {
@@ -45,8 +43,7 @@ func (usergroup *UserGroup) GetUserGroupByName() (UserGroupById, bool) {
 }
 
 // GetUserGroupById  balabala
-func (usergroup *UserGroup) GetUserGroupById() (UserGroupById, bool) {
-	db := GetDbInstance()
+func (usergroup *UserGroup) GetUserGroupById(db *gorm.DB) (UserGroupById, bool) {
 	db.First(usergroup, usergroup.ID)
 	if db.RecordNotFound() == true {
 		return UserGroupById{GroupID: usergroup.ID, GroupName: usergroup.GroupName}, false

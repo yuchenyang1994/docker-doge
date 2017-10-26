@@ -18,8 +18,8 @@ import (
 func RegisterHandler(c *gin.Context) {
 	var singin validators.SingupVlidator
 	if err := c.ShouldBindWith(&singin, binding.JSON); err == nil {
-		d := db.GetDbInstance()
-		if ok := registerUser(singin.Email, singin.Password, singin.UserGroupID, d); ok {
+		d := db.GetDbInstance(c)
+		if ok := registerUser(singin.Email, singin.Password, singin.UserGroupID, d, c); ok {
 			c.JSON(http.StatusOK, gin.H{"message": "sussess", "status": http.StatusOK})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "fail register", "status": http.StatusBadRequest})
@@ -30,10 +30,10 @@ func RegisterHandler(c *gin.Context) {
 	}
 }
 
-func registerUser(email string, password string, groupID uint, d *gorm.DB) bool {
+func registerUser(email string, password string, groupID uint, d *gorm.DB, c *gin.Context) bool {
 	user := &db.User{Email: email, Password: password, UserGroupID: groupID}
 	if err := user.Insert(d); err == nil {
-		e := middleware.GetAuthzInstance()
+		e := middleware.GetAuthzInstance(c)
 		// 注册用户角色
 		strUserId := strconv.Itoa(int(user.ID))
 		if ok := e.AddRoleForUser(strUserId, middleware.ROLE_USER); ok {

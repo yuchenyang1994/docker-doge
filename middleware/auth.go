@@ -31,13 +31,24 @@ const (
 )
 
 // GetAuthzInstance 权限校验器
-func GetAuthzInstance() *casbin.Enforcer {
+func GetAuthzInstance(c *gin.Context) *casbin.Enforcer {
+	return c.MustGet("casbin").(*casbin.Enforcer)
+}
+
+func CreateAuthz() *casbin.Enforcer {
 	once.Do(func() {
 		conf := configs.Conf()
 		adpter := gormadapter.NewAdapter(conf.DATABASE_BACKEND, conf.DATABASE_URI, true)
 		enforcer = casbin.NewEnforcer("./configs/authz_model.conf", adpter)
 	})
 	return enforcer
+}
+
+func CasbinAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authz := CreateAuthz()
+		c.Set("casbin", authz)
+	}
 }
 
 // NewJwtMiddleWare a GinJwtMiddleWare with casbin
@@ -60,7 +71,7 @@ func NewJwtMiddleWare() *jwt.GinJWTMiddleware {
 
 // JwtAuthenticatorHandler get UserId
 func JwtAuthenticatorHandler(username string, password string, c *gin.Context) (string, bool) {
-	d := db.GetDbInstance()
+	d := db.GetDbInstance(c)
 	user := &db.User{Email: username, Password: password}
 	user, has := user.GetUserByPassword(d)
 	userID := strconv.Itoa(int(user.ID))
@@ -72,11 +83,11 @@ func JwtAuthenticatorHandler(username string, password string, c *gin.Context) (
 
 // JwtAuthorizatorHandler checkPermission for User
 func JwtAuthorizatorHandler(userID string, c *gin.Context) bool {
-	d := db.GetDbInstance()
+	d := db.GetDbInstance(c)
 	uUserID, _ := strconv.ParseUint(userID, 0, 64)
 	user := db.User{}
 	d.First(&user, uUserID)
-	e := GetAuthzInstance()
+	e := GetAuthzInstance(c)
 	userRoles := e.GetRolesForUser(userID)
 	return checkPermission(c, e, d, &user, userRoles)
 }

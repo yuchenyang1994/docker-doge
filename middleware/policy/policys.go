@@ -38,3 +38,11 @@ func CreatePolicys(groupName string) [][]string {
 	}
 	return policys
 }
+
+func AddPolicyForUserGroups(groupName string) {
+	e := middleware.CreateAuthz()
+	policys := CreatePolicys(groupName)
+	for _, policy := range policys {
+		e.AddPolicy(policy)
+	}
+}

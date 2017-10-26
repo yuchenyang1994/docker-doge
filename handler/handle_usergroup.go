@@ -18,7 +18,7 @@ func CreateUserGroupHandler(c *gin.Context) {
 	var vUserGroup validators.UserGroupVlidator
 	if err := c.BindWith(&vUserGroup, binding.JSON); err == nil {
 		groupName := vUserGroup.GroupName
-		d := db.GetDbInstance()
+		d := db.GetDbInstance(c)
 		usergroup := db.UserGroup{GroupName: groupName}
 		d.NewRecord(&usergroup)
 		d.Create(&usergroup)
@@ -37,7 +37,7 @@ func RemoveUserGroupHandler(c *gin.Context) {
 	var vUserGroup validators.UserGroupVlidator
 	if err := c.BindWith(&vUserGroup, binding.JSON); err == nil {
 		groupName := vUserGroup.GroupName
-		d := db.GetDbInstance()
+		d := db.GetDbInstance(c)
 		policy.RemovePolicyForUserGroups(groupName)
 		usergroup := db.UserGroup{}
 		d = d.First(&usergroup, "group_name = ?", groupName)
@@ -63,7 +63,7 @@ func ChangeUserGroupNameHandler(c *gin.Context) {
 	if err := c.BindWith(&vUserGroup, binding.JSON); err == nil {
 		groupName := vUserGroup.GroupName
 		newGroupName := vUserGroup.NewGroupName
-		d := db.GetDbInstance()
+		d := db.GetDbInstance(c)
 		usergroup := db.UserGroup{}
 		d = d.First(&usergroup, "group_name = ?", groupName)
 		if !d.RecordNotFound() {
@@ -86,8 +86,9 @@ func ChangeUserGroupNameHandler(c *gin.Context) {
 
 // GetUserGroupsHandler ...
 func GetUserGroupsHandler(c *gin.Context) {
+	d := db.GetDbInstance(c)
 	usergroup := db.UserGroup{}
-	usergroups := usergroup.GetUserGroups()
+	usergroups := usergroup.GetUserGroups(d)
 	if len(usergroups) > 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   http.StatusOK,

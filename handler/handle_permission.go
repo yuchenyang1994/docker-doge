@@ -12,8 +12,8 @@ import "docker-doge/handler/services"
 func AddRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
-		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
+		e := middleware.GetAuthzInstance(c)
+		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -28,9 +28,8 @@ func AddRoleForUsers(c *gin.Context) {
 func RemoveRoleForUsers(c *gin.Context) {
 	var vAddRole validators.AddRoleValidator
 	if err := c.ShouldBindWith(&vAddRole, binding.JSON); err == nil {
-		e := middleware.GetAuthzInstance()
-		ok := e.AddRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
-		e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.Role)
+		e := middleware.GetAuthzInstance(c)
+		ok := e.DeleteRoleForUser(strconv.Itoa(int(vAddRole.UserID)), vAddRole.RoleName)
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "success"})
 		} else {
@@ -44,9 +43,9 @@ func RemoveRoleForUsers(c *gin.Context) {
 
 // GetUsersInfos ...
 func GetUsersInfos(c *gin.Context) {
-	groupName := c.DefaultQuery("groupName", "SUPER")
-	e := middleware.GetAuthzInstance()
-	userinfoService := services.NewUserInfoService(e, groupName)
+	groupName := c.Param("groupName")
+	e := middleware.GetAuthzInstance(c)
+	userinfoService := services.NewUserInfoService(e, groupName, c)
 	userinfos := userinfoService.GetUserInfos()
 	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "data": userinfos})
 }
