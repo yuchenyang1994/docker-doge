@@ -7,8 +7,9 @@ import (
 // UserGroup Db
 type UserGroup struct {
 	gorm.Model
-	GroupName string `gorm:"size:60"`
-	Users     []User
+	GroupName        string `gorm:"size:60"`
+	Users            []User
+	DockerContainers []DockerContainer
 }
 
 // UserGroupById Json format struct
