@@ -7,7 +7,7 @@ import (
 // DockerMachine ...
 type DockerMachine struct {
 	gorm.Model
-	Domain     string `gorm:"size:100"`
+	Domain     string `gorm:"size:100" json:"domain"`
 	Containers []DockerContainer
 }
 
@@ -15,8 +15,8 @@ type DockerMachine struct {
 type DockerContainer struct {
 	gorm.Model
 	DomainMachineID uint
-	CID             string `gorm:"size:255"`
-	Names           string `gorm:"size:200"`
-	Image           string `gorm:"size:200"`
-	Command         string `gorm:"size:200"`
+	CID             string `gorm:"size:255" json:"containerId"`
+	Name            string `gorm:"size:200" json:"name"`
+	Image           string `gorm:"size:200" json:"image"`
+	Command         string `gorm:"size:200" json:"command"`
 }
