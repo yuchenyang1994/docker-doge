@@ -27,3 +27,5 @@ import:
   version: v3.0.0
 - package: github.com/docker/go-units
   version: v0.3.2
+- package: github.com/gizak/termui
+  version: ~2.2.0

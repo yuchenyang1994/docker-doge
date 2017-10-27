@@ -22,7 +22,7 @@
      - 查看容器日志
      - 查看容器内应用日志
      - 日志过滤与查找
-** TODO FRONTEND WEB前端界面                                 :projects:doge:
+** TODO FRONTEND 命令行操作界面Client                        :projects:doge:
 *** TODO 用户相关
 **** TODO 登录注册
 **** TODO 用户组相关(超级管理员)
@@ -44,3 +44,4 @@
      - 查看容器内应用日志
      - 日志过滤与查找
      - 日志高亮
+     - 日志导出
