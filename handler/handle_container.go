@@ -7,6 +7,7 @@ import (
 
 	"net/http"
 
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -52,5 +53,26 @@ func GetAllContainersWithDomain(c *gin.Context) {
 	} else {
 		d.Model(&domain).Related(&containers)
 		c.JSON(200, gin.H{"containers": containers})
+	}
+}
+
+// GetAllContainersForMachine ...
+func GetAllContainersForMachine(c *gin.Context) {
+	domainKey := c.Param("dockerDomain")
+	d := db.GetDbInstance(c)
+	domain := db.DockerMachine{}
+	d = d.First(&domain, "domain = ?", domainKey)
+	if notFound := d.RecordNotFound(); notFound {
+		c.JSON(404, gin.H{"message": "not found"})
+	} else {
+		if dockerCli, err := docker.NewClient(domain.Domain); err == nil {
+			containers, err := dockerCli.ListContainers(docker.ListContainersOptions{All: false})
+			if err != nil {
+				c.JSON(200, gin.H{"containers": containers})
+			} else {
+				c.JSON(401, gin.H{"error": err.Error()})
+			}
+		}
+
 	}
 }
